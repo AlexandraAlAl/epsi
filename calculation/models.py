@@ -1,8 +1,7 @@
 from django.db import models
 from django.utils import timezone
-
-
-class Calc(models.Model):
+    
+class Post(models.Model):
     author = models.ForeignKey('auth.User')
     title = models.CharField(max_length=200)
     file=models.FileField(upload_to='calculation')

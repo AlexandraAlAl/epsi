@@ -1,4 +1,4 @@
 from django.contrib import admin
-from .models import Calc
+from .models import Post
 
-admin.site.register(Calc)
+admin.site.register(Post)
