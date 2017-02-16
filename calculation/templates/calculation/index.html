@@ -1,7 +1,7 @@
-{% if latest_calculation_list %}
+{% if latest_post_list %}
     <ul>
-    {% for calculation in latest_calculation_list %}
-        <li><a href="/calculation/{{ calculation.id }}/">{{ calculation.calculation_text }}</a></li>
+    {% for post in latest_post_list %}
+        <li><a href="/posts/{{ post.id }}/">{{ post.title }}</a></li>
     {% endfor %}
     </ul>
 {% else %}
