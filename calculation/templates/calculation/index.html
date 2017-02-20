@@ -1,9 +1,22 @@
+﻿{% extends 'calculation/base.html' %}
+{% block content %}
+        
+
+
+
 {% if latest_post_list %}
     <ul>
     {% for post in latest_post_list %}
-        <li><a href="/posts/{{ post.id }}/">{{ post.title }}</a></li>
+        <li><a href="{% url 'calculation:detail' post.id %}">{{ post.title}}</a></li>
     {% endfor %}
     </ul>
 {% else %}
     <p>No calculations are available.</p>
 {% endif %}
+
+
+
+
+
+
+{% endblock content %}

@@ -1,0 +1,11 @@
+﻿{% extends 'calculation/base.html' %}
+{% block content %}
+
+
+<h1>{{ post.title}}</h1>
+<p>{{post.author}}</p>
+<p>{{post.created_date}}</p>
+<a href="/media/{{post.file}}"> Скачать файл {{post.file}}<a/>
+
+
+{% endblock content %}

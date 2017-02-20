@@ -1,19 +1,19 @@
-from django.shortcuts import render
-from django.http import HttpResponse
-from django.template import RequestContext, loader
+from django.http import Http404
+from django.shortcuts import get_object_or_404,render
 from .models import Post
+from django.http import HttpResponse
 
 def index(request):
     latest_post_list = Post.objects.order_by('-created_date')[:5]
-    template = loader.get_template('calculation/index.html')
-    context = RequestContext(request, {
-        'latest_post_list': latest_post_list,
-    })
-    return HttpResponse(template.render(context))
+    context = {'latest_post_list': latest_post_list}
+    return render(request, 'calculation/index.html', context)
 
 def detail(request, post_id):
-    return HttpResponse("You're looking at post %s." % post_id)
+    post = get_object_or_404(Post, pk=post_id)
+    return render(request, 'calculation/detail.html', {'post': post})
 
 def results(request, post_id):
-    response = "You're looking at the results of post %s."
-    return HttpResponse(response % post_id)
+    post = get_object_or_404(Post, pk=post_id)
+    return render(request, 'calculation/detail.html', {'post': post})
+
+

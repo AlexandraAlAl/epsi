@@ -2,10 +2,10 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    # ex: /calculation/
+    # ex: /posts/
     url(r'^$', views.index, name='index'),
-    # ex: /calculation/5/
+    # ex: /posts/5/
     url(r'^(?P<post_id>[0-9]+)/$', views.detail, name='detail'),
-    # ex: /calculation/5/results/
+    # ex: /posts/5/results/
     url(r'^(?P<post_id>[0-9]+)/results/$', views.results, name='results'),
 ]
