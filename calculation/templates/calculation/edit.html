@@ -1,0 +1,16 @@
+﻿{% extends 'calculation/base.html' %}
+{% block content %}
+
+
+<h1>Редактирование</h1>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+
+<form action="" method="POST" enctype="multipart/form-data" class="post-form">{% csrf_token %}
+
+{{ form.as_p }}
+
+ <button type="submit" class="save btn btn-default">Save</button>
+
+</form>
+{% endblock content %}
