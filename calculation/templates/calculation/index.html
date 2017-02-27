@@ -3,20 +3,22 @@
 {% load staticfiles %}  
 
 
-
 {% if latest_post_list %}
-    <ul>
+
     {% for post in latest_post_list %}
-        <li><a href="{% url 'calculation:detail' post.id %}">{{ post.title}}</a></li>
+    <div class="post">
+	<div class="date">
+             {{ post.created_date }}
+	</div>
+
+        <h1><a href="{% url 'calculation:detail' post.id %}">{{ post.title}}</a></h1>
+    </div>
+
     {% endfor %}
-    </ul>
+
 {% else %}
     <p>No calculations are available.</p>
 {% endif %}
-
-
-
-
 
 
 {% endblock content %}

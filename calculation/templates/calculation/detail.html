@@ -2,24 +2,26 @@
 {% block content %}
 
 <div class="post">
-            {% if post.created_date %}
-                <div class="date">
-                    {{ post.created_date }}
-                </div>
-	    {% endif %}
+        {% if post.created_date %}
+            <div class="date">
+                {{ post.created_date }}
+            </div>
+	{% endif %}
 
-<a class="btn btn-default" href="{% url 'calculation:edit' post_id=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+	<a class="btn btn-default" href="{% url 'calculation:edit' post_id=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
 
-<h1>{{ post.title}}</h1>
+	<h1>{{ post.title}}</h1>
+	<p>Автор: {{ post.author }}</p>
+	<p>CSI: {{post.csi}}</p>
+	<p>Loyalty: {{post.loyalty}}</p>
 
-{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+	{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'calculation:new'%}" method="post">
-{% csrf_token %}
+	<form action="{% url 'calculation:new'%}" method="post">
+		{% csrf_token %}
 
-<p>{{post.author}}</p>
-<a href="/media/{{post.file}}"> Скачать файл {{post.file}}<a/>
+	<a href="/media/{{post.file}}"> Скачать файл<a/>
 
-</form>
+	</form>
  </div>
 {% endblock content %}

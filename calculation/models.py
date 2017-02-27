@@ -7,7 +7,9 @@ class Post(models.Model):
     title = models.CharField(max_length=200)
     file=models.FileField(upload_to='calculation')#settings.MEDIA_URL+'calculation')
     created_date = models.DateTimeField(default=timezone.now)
-
+    csi = models.IntegerField(default=0)
+    loyalty = models.IntegerField(default=0)
+    
     def publish(self):
         self.created_date = timezone.now()
         self.save()
@@ -17,5 +19,3 @@ class Post(models.Model):
 
     def get_file(self):
         return self.file
-
-

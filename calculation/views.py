@@ -6,6 +6,9 @@ from django.utils import timezone
 from .models import Post
 from .forms import PostForm
 from django.conf import settings
+from django.core import management
+import csv
+import pprint
 
 def index(request):
     latest_post_list = Post.objects.order_by('-created_date')[:5]
@@ -28,7 +31,31 @@ def new(request):
             post.author = request.user
             post.created_date = timezone.now()
             post.save()
-            handle_uploaded_file(request.FILES["file"])
+            table = []
+            table = handle_uploaded_file(request.FILES['file'])
+            
+            csi = 0
+            for c in range(1, 4):
+                print(c-1)
+                print(len(table)-1)
+                r = len(table)
+                print(table[r-1][c-1])
+                csi += table[r-1][c-1]
+                print(csi)
+            post.csi = round(csi,2) 
+            post.save()
+
+            loyalty = 0
+            for c in range(4, 7):
+                print(c-1)
+                print(len(table)-1)
+                r = len(table)
+                print(table[r-1][c-1])
+                loyalty += table[r-1][c-1]
+                print(loyalty)
+            post.loyalty = round(loyalty,2)
+            post.save()
+            
             return render(request, 'calculation/detail.html', {'post': post})
             #return redirect('/detail/', pk=post.pk)
     else:
@@ -47,7 +74,30 @@ def edit(request,post_id):
             post.created_date = timezone.now()
             post.save()
             file_field=request.FILES['file']
-            handle_uploaded_file(file_field)
+            table = []
+            table = handle_uploaded_file(file_field)
+            
+            csi = 0
+            for c in range(1, 4):
+                print(c-1)
+                print(len(table)-1)
+                r = len(table)
+                print(table[r-1][c-1])
+                csi += table[r-1][c-1]
+                print(csi)
+            post.csi = round(csi/3,2)
+
+            loyalty = 0
+            for c in range(4, 7):
+                print(c-1)
+                print(len(table)-1)
+                r = len(table)
+                print(table[r-1][c-1])
+                loyalty += table[r-1][c-1]
+                print(loyalty)
+            post.loyalty = round(loyalty/3,2)
+            post.save()
+            
             return render(request, 'calculation/detail.html', {'post': post})
             #return redirect('/detail/', pk=post.pk)
     else:
@@ -56,8 +106,39 @@ def edit(request,post_id):
 
 
 def handle_uploaded_file(f):
-    with open('calculation/data.txt', 'wb+') as dest:
+    with open('calculation/data.csv', 'wb+') as infile:
         for chunk in f.chunks():
-            dest.write(chunk)
+            infile.write(chunk)
+    infile = open('calculation/data.csv', 'r')
+    table = []
+    table = [row for row in csv.reader(infile,delimiter=';')]
+    infile.close()
 
+    for r in range(1,len(table)):
+        for c in range(0, len(table[0])):
+            table[r][c] =  float(table[r][c])
 
+    row = [0.0]*len(table[0])
+    for c in range(0, len(row)):
+        s = 0
+        k = 0
+        for r in range(1, len(table)):
+            k += 1
+            s += table[r][c]
+        row[c] = round(s/k, 1)
+    table.append(row)
+
+    outfile = open('calculation/data.csv', 'w')
+    writer = csv.writer(outfile,delimiter=',')
+    for row in table:
+        writer.writerow(row)
+    outfile.close()
+    pprint.pprint(table)
+    return table
+
+   
+
+def count(request,post_id):
+    post = get_object_or_404(Post, pk=post_id)
+
+    return render(request, 'calculation/detail.html', {'post': post})
