@@ -26,7 +26,9 @@ from django.views.decorators.csrf import csrf_protect
 from django.views.decorators.debug import sensitive_post_parameters
 
 from django.shortcuts import get_object_or_404,render
-
+from extuser.models import ExtUser
+from django.contrib.auth.decorators import login_required
+from .forms import ExtUserForm
 
 def login(request, template_name='registration/login.html',
           redirect_field_name=REDIRECT_FIELD_NAME,
@@ -44,8 +46,7 @@ def login(request, template_name='registration/login.html',
 
             # Ensure the user-originating redirection url is safe.
             if not is_safe_url(url=redirect_to, host=request.get_host()):
-                print(form.get_user())
-                redirect_to = ''
+                redirect_to = 'profile/'
 
             # Okay, security check complete. Log the user in.
             auth_login(request, form.get_user())
@@ -108,3 +109,21 @@ def logout(request, next_page=None,
         request.current_app = current_app
 
     return render(request, 'registration/loggedout.html', context)
+
+@login_required
+def profile(request,template_name='registration/profile_detail.html'):
+    user = get_object_or_404(ExtUser, email = request.user.email)
+    return render(request, template_name, {'user': user})
+
+@login_required
+def profile_edit(request,template_name='registration/profile_edit.html'):
+    user = get_object_or_404(ExtUser, email = request.user.email)
+    if request.method == 'POST':
+        form = ExtUserForm(request.POST, instance=user)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.save()
+        return render(request, 'registration/profile_detail.html', {'user': user})
+    else:
+        form = ExtUserForm(instance=user)
+    return render(request, 'registration/profile_edit.html', {'form': form})

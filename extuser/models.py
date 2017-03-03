@@ -24,8 +24,6 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-
-
 class ExtUser(AbstractBaseUser, PermissionsMixin):
 
     email = models.EmailField(

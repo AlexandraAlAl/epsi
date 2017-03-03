@@ -9,10 +9,10 @@ from django.core import management
 import csv
 import pprint
 from django.contrib.auth.decorators import login_required
+from extuser import models
 
 @login_required
-def index(request):
-    
+def index(request, user_name):
     latest_post_list = Post.objects.order_by('-created_date')[:5]
     context = {'latest_post_list': latest_post_list}
     return render(request, 'calculation/index.html', context)
@@ -22,10 +22,11 @@ def detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     return render(request, 'calculation/detail.html', {'post': post})
 
-@login_required
+"""@login_required
 def results(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     return render(request, 'calculation/detail.html', {'post': post})
+"""
 
 @login_required
 def new(request):
@@ -69,8 +70,6 @@ def new(request):
 
 @login_required
 def edit(request,post_id):
-    if not request.user.is_authenticated():
-        return HttpResponseRedirect('accounts/login/?next=%s' % request.path)
     post = get_object_or_404(Post, pk=post_id)
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance=post)
