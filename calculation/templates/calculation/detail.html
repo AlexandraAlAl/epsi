@@ -1,5 +1,6 @@
 ﻿{% extends 'calculation/base.html' %}
 {% block content %}
+{% load staticfiles %}
 
 <div class="post">
         {% if post.created_date %}
@@ -19,9 +20,7 @@
 
 	<form action="{% url 'calculation:new'%}" method="post">
 		{% csrf_token %}
-
-	<a href="/media/{{post.file}}"> Скачать файл<a/>
-
+		<a href="/media/{{post.file}}"> Скачать файл<a/>
 	</form>
  </div>
 {% endblock content %}

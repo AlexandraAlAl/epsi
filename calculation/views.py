@@ -1,5 +1,4 @@
-from django.http import Http404
-from django.http import HttpResponse
+from django.http import Http404,HttpResponse,HttpResponseRedirect
 from django.shortcuts import get_object_or_404,render
 from django.shortcuts import redirect
 from django.utils import timezone
@@ -9,20 +8,26 @@ from django.conf import settings
 from django.core import management
 import csv
 import pprint
+from django.contrib.auth.decorators import login_required
 
+@login_required
 def index(request):
+    
     latest_post_list = Post.objects.order_by('-created_date')[:5]
     context = {'latest_post_list': latest_post_list}
     return render(request, 'calculation/index.html', context)
 
+@login_required
 def detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     return render(request, 'calculation/detail.html', {'post': post})
 
+@login_required
 def results(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     return render(request, 'calculation/detail.html', {'post': post})
 
+@login_required
 def new(request):
     if request.method == "POST":
         form = PostForm(request.POST, request.FILES)
@@ -62,8 +67,10 @@ def new(request):
         form = PostForm()
     return render(request, 'calculation/new.html', {'form': form})
 
-
+@login_required
 def edit(request,post_id):
+    if not request.user.is_authenticated():
+        return HttpResponseRedirect('accounts/login/?next=%s' % request.path)
     post = get_object_or_404(Post, pk=post_id)
     if request.method == 'POST':
         form = PostForm(request.POST, request.FILES, instance=post)
@@ -135,10 +142,3 @@ def handle_uploaded_file(f):
     outfile.close()
     pprint.pprint(table)
     return table
-
-   
-
-def count(request,post_id):
-    post = get_object_or_404(Post, pk=post_id)
-
-    return render(request, 'calculation/detail.html', {'post': post})
