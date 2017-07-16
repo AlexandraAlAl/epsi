@@ -1,43 +1,57 @@
 ﻿{% load staticfiles %}
 <html>
-        <head>
-            <title>CSI&Loyalty</title>
-	    <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css">
-            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-            <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-            <link rel="stylesheet" href="{% static 'css/calculation/post.css' %}">
-	    <link rel="stylesheet" href="{% static 'css/calculation/style.css' %}">
-        </head>
+    <head>
+        <title>EPSI</title>
+	   <!--  <link href="https://fonts.googleapis.com/css?family=Lobster&subset=latin,cyrillic" rel="stylesheet" type="text/css"> -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+      <!--   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"> -->
+        <link rel="stylesheet" href="{% static 'css/calculation/post.css' %}">
+    </head>
+    
     <body>
 
 	<div class="page-header">
 	    {% if user.is_authenticated %}
 		<a href="{% url 'logout' %}" class="top-menu">logout</a>
-		<h1><a href="{% url 'calculation:index' user_name=user.myURL%}">CSI&Loyalty</a></h1>
+		<a href="{% url 'calculation:index'  %}">
+			<img style="height:90px" src="{% static 'img/calculation/logo_stand.png'%}" />
+		</a>
 	    {% else %}
-		<h1>CSI&Loyalty</h1>
+		<img style="height:90px" src="{% static 'img/calculation/logo_stand.png'%}" />
 	    {% endif %}
-	    	  
 	</div>
 
-	<div class="page-left">
+	    <div class="page-left">
+	    	{% if user.is_authenticated %}
+			<p>Пользователь:
+			{{user.firstname}}
+			{{user.lastname}}</p>
+			<center><a href="{% url 'calculation:new'  %}" class="top-menu-left">Загрузить</a></center>
+		    {% endif %}
+	    </div>
 
-	    {% if user.is_authenticated %}
-		<p>Пользователь:</p>
-		<p>{{user.firstname}}</p>
-		<p>{{user.lastname}}</p>
-		<a href="{% url 'calculation:new' %}" class="top-menu">Загрузить</a>
-	    {% endif %}
 
-	</div>
+		<div id="wrapper">
+			<div>
+			    {% if user.is_authenticated %}
+				<img style = "position: fixed; " src="{% static 'img/calculation/fon.jpg'%}" />
+			    {% else %}
+				
+			    {% endif %}
+			</div>
+			<div class="content container">
+				<div class="row">
+					<div class="col-md-8">
+					<center>
+					{% block content %}
+					{% endblock %}
+					</center>
+                	</div>
+				</div>
+			</div>
+		</div>
 
-        <div class="content container">
-            <div class="row">
-                <div class="col-md-8">
-                {% block content %}
-                {% endblock %}
-                </div>
-            </div>
-        </div>
+
+	<footer></footer>
     </body>
 </html>

@@ -1,16 +1,16 @@
 ﻿{% extends "calculation/base.html" %}
 
 {% block content %}
-<div>
-	<p>Профиль пользователя:</p>
-	<p>Имя: {{user.firstname}}</p>
-	<p>Фамилия: {{user.lastname}}</p>
-	<p>Email: {{user.email}}</p>
-	<p>Компания: {{user.name_comp}}</p>
-	<p>Телефон: {{user.phone}}</p>
-	<p>Лицензия: {{user.day_licenz}} дней</p>
+	<div class="post">
+		<p>Профиль пользователя:</p>
+		<p>Имя: {{user.firstname}}</p>
+		<p>Фамилия: {{user.lastname}}</p>
+		<p>Email: {{user.email}}</p>
+		<p>Компания: {{user.name_comp}}</p>
+		<p>Телефон: {{user.phone}}</p>
+		<p>Лицензия: {{user.day_licenz}} дней</p>
 
-<a class="btn btn-default" href="{% url 'profile_edit' %}"><span class="glyphicon glyphicon-pencil"></span></a>
+		<a class="btn btn-default" href="{% url 'profile_edit' %}"><span class="glyphicon glyphicon-pencil"></span></a>
 
-</div>
+	</div>
 {% endblock %}

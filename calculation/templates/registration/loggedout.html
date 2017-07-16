@@ -1,15 +1,8 @@
 ﻿{% extends "calculation/base.html" %}
 
-
-
-
-{% block content %}
-
-
-<p>"Thanks for spending some quality time with the Web site today." </p>
-
-
-<p><a href="{% url 'login' %}">залогиниться опять</a></p>
-
-
-{% endblock %}
+	{% block content %}
+	<div class="post">
+		<p>Спасибо, что пользуетесь нашим сервисом!</p>
+		<p>Для продолжения работы вам надо <a href="{% url 'login' %}">пройти авторизацию.</a></p>
+	</div>
+	{% endblock %}

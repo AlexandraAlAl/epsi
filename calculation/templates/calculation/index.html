@@ -2,23 +2,47 @@
 {% block content %}
 {% load staticfiles %}  
 
+	{% if latest_post_list %}
 
-{% if latest_post_list %}
+	    {% for post in latest_post_list %}
+	    
+	    <div class="post_index">
 
-    {% for post in latest_post_list %}
-    <div class="post">
-	<div class="date">
-             {{ post.created_date }}
-	</div>
+			<div class="date">
+	             {{ post.created_date }}
+			</div>
 
-        <h1><a href="{% url 'calculation:detail' post.id %}">{{ post.title}}</a></h1>
-    </div>
+	        <h1><a href="{% url 'calculation:detail'  post.id %}">{{ post.title}}</a></h1>
 
-    {% endfor %}
+				<div class="csi_index" >
+					
+						<img id="csi_index_meter_needle" src="{% static 'img/calculation/svg-meter-gauge-needle.svg'%}" alt="">
+						
+					<img src="{% static 'img/calculation/schet.png'%}"/>
 
-{% else %}
-    <p>No calculations are available.</p>
-{% endif %}
+					<input id="slider"  value="{{post.csi}}"/>
+					<p>CSI: {{post.csi}}</p>
+			    		
 
+				</div>
+
+
+				<div class="loy_index">
+					<div>
+						<img id="loy_index_meter_needle" src="{% static 'img/calculation/svg-meter-gauge-needle.svg'%}" alt="">
+					</div>
+					<img src="{% static 'img/calculation/schet.png'%}"/>
+					<p>Loyalty: {{post.loyalty}} <input id="slider"  value="{{post.loyalty}}"/></p>
+			    		<script src="{% static 'js/calculation/script_index.js'%}"></script>
+
+				</div>
+
+	    </div>
+
+	    {% endfor %}
+
+	{% else %}
+	    <p>No calculations are available.</p>
+	{% endif %}
 
 {% endblock content %}
