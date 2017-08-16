@@ -16,6 +16,7 @@
 		<a href="{% url 'calculation:index'  %}">
 			<img style="height:90px" src="{% static 'img/calculation/logo_stand.png'%}" />
 		</a>
+		<p class="top-title">Барометр лояльности клиентов</p>
 	    {% else %}
 		<img style="height:90px" src="{% static 'img/calculation/logo_stand.png'%}" />
 	    {% endif %}
@@ -23,10 +24,11 @@
 
 	    <div class="page-left">
 	    	{% if user.is_authenticated %}
-			<p>Пользователь:
-			{{user.firstname}}
-			{{user.lastname}}</p>
-			<center><a href="{% url 'calculation:new'  %}" class="top-menu-left">Загрузить</a></center>
+			<p>Пользователь:</p>
+			<a href="{% url 'profile' %}"><p>{{user.firstname}} {{user.lastname}}</p></a>
+			<p><center><a href="{% url 'calculation:new'  %}" class="top-menu-left">Загрузить</a></center></p>
+			<p><center><a href="{% url 'calculation:archive'  %}" class="top-menu-left">Архив</a></center></p>
+			<p><center>До конца лицензии {{user.day_licenz}} дней</center></p>
 		    {% endif %}
 	    </div>
 
@@ -39,7 +41,7 @@
 				
 			    {% endif %}
 			</div>
-			<div class="content container">
+			<div class="container">
 				<div class="row">
 					<div class="col-md-8">
 					<center>

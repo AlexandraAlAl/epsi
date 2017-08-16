@@ -6,7 +6,7 @@
         <div class="date">
                 {{ post.created_date }}
         </div>
-	<a class="btn btn-default" href="{% url 'calculation:edit'  post_id=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+	
 
 	<h1>{{ post.title}}</h1>
 	<p>Автор: {{ post.author }}</p>
@@ -19,7 +19,7 @@
 		<img src="{% static 'img/calculation/schet.png'%}"/>
 
 		<input id="slider"  value="{{post.csi}}"/>
-		<p>CSI: {{post.csi}}</p>
+		<p>Индекс удовлетворенности: {{post.csi}}</p>
     		<script src="{% static 'js/calculation/script.js'%}"></script>
 
 	</div>
@@ -30,21 +30,21 @@
 			<img id="loy_meter_needle" src="{% static 'img/calculation/svg-meter-gauge-needle.svg'%}" alt="">
 		</div>
 		<img src="{% static 'img/calculation/schet.png'%}"/>
-		<p>Loyalty: {{post.loyalty}} <input id="slider"  value="{{post.loyalty}}"/></p>
+		<p>Индекс лояльности: {{post.loyalty}} <input id="slider"  value="{{post.loyalty}}"/></p>
     		<script src="{% static 'js/calculation/script.js'%}"></script>
 
 	</div>
 
-
+	<p>При увеличении удовлетворенности на <input id="" value=1></p> лояльность изменится на {{post.regress}}</p>
 	<div class="example2">
-		<h3>Матрица:</h3>
+		<h3>Матрица прогноза будущих продаж:</h3>
 		<img src="{% static 'img/calculation/matr.png'%}"/>
 		<span>
-		<p id = "gr_one">{{ post.one }}</p>
-		<p id = "gr_two">{{ post.two }}</p>
-		<p id = "gr_three">{{ post.three }}</p>
-		<p id = "gr_four">{{ post.four }}</p>
-		<p id = "gr_five">{{ post.five }}</p>
+		<p id = "gr_one">{{ post.one }}%</p>
+		<p id = "gr_two">{{ post.two }}%</p>
+		<p id = "gr_three">{{ post.three }}%</p>
+		<p id = "gr_four">{{ post.four }}%</p>
+		<p id = "gr_five">{{ post.five }}%</p>
 		</span>
 	</div>
 

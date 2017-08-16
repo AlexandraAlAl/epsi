@@ -1,17 +1,28 @@
 ﻿#wrapper {
-	max-width: 960px;
-	margin: auto;
+max-width: 960px;
+width: 100%;
+margin: 90 0 0 240px;
+position: absolute;  
 }
 
-/*.container{
-    width: 900px;
-    float: right;
-    margin: 0 0 0 500px;
-}*/
+#post_count{
+    color:#4B0082;
+    font-size:70px; 
+}
 
-.col-md-8{
-    width:100%;
-    margin: 100 50 30 -70px;
+.row{
+    z-index: 102;
+}
+.container {
+    width: 900px;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.col-md-8 {
+    width: 100%;
 }
 
 .example2 {
@@ -37,25 +48,25 @@
 #gr_one{
     position:absolute;
     top:265px;   
-    left:100px;
+    left:70px;
 }
 
 #gr_two{
     position:absolute;
     top:150px;   
-    left:100px;
+    left:70px;
 }
 
 #gr_three{
     position:absolute;
     top:265px;   
-    left:230px;
+    left:210px;
 }
 
 #gr_four{
     position:absolute;
     top:140px;   
-    left:230px;
+    left:210px;
 }
 
 #gr_five{
@@ -67,6 +78,7 @@
 .csi, .loy{
     margin: 20px;
     display: inline-block;
+    position: relative;
 }
 
 .csi img, .loy img{
@@ -74,8 +86,9 @@
 }
 
 #csi_meter_needle{
-	left: 370px;
-    top: 230px;
+	left: 94px;
+    top: 37px;
+
     position: absolute;
     width: 12px;
     display: inline-block;
@@ -85,8 +98,9 @@
 }
 #loy_meter_needle{
     width: 12px;
-    left: 615px;
-    top: 230px;
+    left: 94px;
+    top: 37px;
+
     position: absolute;
     display: inline-block;
     transform-origin:bottom center;
@@ -149,6 +163,10 @@ visibility:hidden;
             box-shadow: 0 8px 6px -6px #777;
 }
 
+.page-header p{
+
+}
+
 /*.page-header h1, .page-header h1 a, .page-header h1 a:visited, .page-header h1 a:active {
         color: #0000CD;
         font-size: 24pt;
@@ -160,7 +178,7 @@ visibility:hidden;
 .page-left {
 	background-color: #f6f6f6;
 	position: fixed;
-    width: 300px;
+    width: 240px;
 	top: 90px; /* Расстояние от верхнего края */ 
 	bottom: 0; /* Расстояние снизу  */
 	z-index: 100;
@@ -198,26 +216,43 @@ visibility:hidden;
     }
 
     .top-menu, .top-menu:hover, .top-menu:visited {
-    color: #01b1af;
+    color: #4B0082;
     margin: 15 10 10 10px;
     float: right;
     font-family: Monotype Corsiva;
     font-size: 20pt;
 	padding: 0 10 0 10px;
 	border-radius: 5px;
-	border: 3px solid #01b1af;
+	border: 3px solid #4B0082;
 	background-color: #ffffff;
 	text-decoration: none;
     }
+/* НЕ РАБОТАЕТ ШРИФТ */
+    @font-face {
+    font-family: CenturyGothic; /* Гарнитура шрифта */
+    src: url(C:\Users\sandr_000\django\calculation\static\ofont.ru_Century Gothic.ttf); /* Путь к файлу со шрифтом  */
+   }
+   h1 {
+    font-family: CenturyGothic;
+   }
+
+    .top-title {
+    color: #4B0082;
+    margin: 10 10 10 10px;
+    float: right;
+    font-family: CenturyGothic;
+    font-size: 30pt;
+    padding: 0 10 0 10px;
+    }
 
     .top-menu-left, .top-menu-left:hover, .top-menu-left:visited {
-    color: #01b1af;
+    color: #4B0082;
     margin: auto;
     font-family: Monotype Corsiva;
     font-size: 25pt;
     padding: 5px 10px 5px 10px;
     border-radius: 5px;
-    border: 3px solid #01b1af;
+    border: 3px solid #4B0082;
     background-color: #f6f6f6;
     text-decoration: none;
     }
@@ -250,11 +285,6 @@ visibility:hidden;
         margin: 10 0 10 0px;
     }
 
-.row{
-    width: 1000px;
-    float: right;
-    z-index: 102;
-}
 
 .btn-default{
     float: left;

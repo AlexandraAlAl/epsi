@@ -12,10 +12,7 @@ from django.contrib.auth.decorators import login_required
 from extuser import models
 
 #для регрессии
-import numpy as np
-import pandas as pd
-import statsmodels.api as sm
-import patsy as pt
+from pandas import read_csv
 import sklearn.linear_model as lm
 
 
@@ -31,12 +28,12 @@ def detail(request, post_id):
     post = get_object_or_404(Post, pk=post_id)
     return render(request, 'calculation/detail.html', {'post': post})
 
-""" нет отдельного представления, все в detail
 @login_required
-def results(request, post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    return render(request, 'calculation/detail.html', {'post': post})
-"""
+def archive(request):
+    latest_post_list = Post.objects.order_by('-created_date').filter(author=request.user)
+    archive_latest_post_list = latest_post_list.filter(delete_date='')
+    context = {'archive_latest_post_list': archive_latest_post_list}
+    return render(request, 'calculation/archive_index.html', context)
 
 @login_required
 def new(request):
@@ -54,39 +51,43 @@ def new(request):
             post.loyalty = count_loyalty(table)
             [post.one,post.two,post.three,post.four,post.five] = count_group(table)
             post.save()
-            post.regress = regress(table)
+            #
+            tb = read_csv('mysite/media/calculation/' + request.FILES['file'].name,';')
+    
+            post.regress = regress(tb)
+            post.save()
             return render(request, 'calculation/detail.html', {'post': post})
             #return redirect('/detail/', pk=post.pk)
     else:
         form = PostForm()
     return render(request, 'calculation/new.html', {'form': form})
 
-@login_required
-def edit(request,post_id):
-    post = get_object_or_404(Post, pk=post_id)
-    if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES, instance=post)
-        if form.is_valid():
-            #form.save()
-            post=form.save(commit=False)
-            post.author = request.user
-            post.created_date = timezone.now()
-            post.save()
-            file_field=request.FILES['file']
-            table = []
-            table = handle_uploaded_file(file_field)
-            pprint.pprint(table)
-            post.csi = count_csi(table)
-            post.loyalty = count_loyalty(table)
-            [post.one,post.two,post.three,post.four,post.five] = count_group(table)
-            post.save()
-            
-            print(post.one,post.two,post.three,post.four,post.five)
-            return render(request, 'calculation/detail.html', {'post': post})
-            #return redirect('/detail/', pk=post.pk)
-    else:
-        form = PostForm(instance=post)
-    return render(request, 'calculation/edit.html', {'form': form})
+##@login_required
+##def edit(request,post_id):
+##    post = get_object_or_404(Post, pk=post_id)
+##    if request.method == 'POST':
+##        form = PostForm(request.POST, request.FILES, instance=post)
+##        if form.is_valid():
+##            #form.save()
+##            post=form.save(commit=False)
+##            post.author = request.user
+##            post.created_date = timezone.now()
+##            post.save()
+##            file_field=request.FILES['file']
+##            table = []
+##            table = handle_uploaded_file(file_field)
+##            #pprint.pprint(table)
+##            post.csi = count_csi(table)
+##            post.loyalty = count_loyalty(table)
+##            [post.one,post.two,post.three,post.four,post.five] = count_group(table)
+##            post.save()
+##            
+##            print(post.one,post.two,post.three,post.four,post.five)
+##            return render(request, 'calculation/detail.html', {'post': post})
+##            #return redirect('/detail/', pk=post.pk)
+##    else:
+##        form = PostForm(instance=post)
+##    return render(request, 'calculation/edit.html', {'form': form})
 
 """считываем данные с загруженного файла"""
 def handle_uploaded_file(f):
@@ -99,6 +100,7 @@ def handle_uploaded_file(f):
     url = 'mysite/media/calculation/' + f.name
     myfile = open(url, 'r')
     table = []
+    
     table = [row for row in csv.reader(myfile,delimiter=';')]
     myfile.close()
 
@@ -155,25 +157,25 @@ def count_group(table):
         for c in range(0, 3):
             csi += table[r][c]
         csi = csi*10/3
-        print(csi)
+        #print(csi)
         for c in range(3, 6):
             loy += table[r][c]
         loy = loy*10/3
-        print(loy)
+        #print(loy)
         if csi <= 55:
             if loy <= 55:
                 one += 1
-                print(1)
+                #print(1)
             else:
                 three += 1
-                print(3)
+                #print(3)
         else:
             if loy <= 55:
                 two += 1
-                print(2)
+                #print(2)
         if (loy>=75) and (csi>=75):
             four += 1
-            print(4)
+            #print(4)
     five = len(table)-2-one-two-three-four
     one = round(one/len(table)*100,1)
     two = round(two/len(table)*100,1)
@@ -185,19 +187,15 @@ def count_group(table):
 
 
 
-# загружаем файл с данными
-df = pd.DataFrame.from_csv("http://roman-kh.github.io/files/linear-models/simple1.csv")
-# x - таблица с исходными данными факторов (x1, x2, x3)
-x = df.iloc[:,:-1]
-# y - таблица с исходными данными зависимой переменной
-y = df.iloc[:,-1]
-
-
-def regress(table):
-    x_csi = []
-    y_loy = []
-    for stroka in range(1,len(table)-1):
-        x_csi[srtoka-1] = table[stroka][0]+table[stroka][1]+table[stroka][2]
-        y_loy[srtoka-1] = table[stroka][3]+table[stroka][4]+table[stroka][5]
-    pprint.pprint(x)
-    return 1
+def regress(tb):
+    x_csi = (tb['CSI1']+tb['CSI2']+tb['CSI3'])/3
+    y_loy = (tb['Loyalty1']+tb['Loyalty2']+tb['Loyalty3'])/3
+    x=x_csi.values.reshape(-1,1)
+    y=y_loy.values.reshape(-1,1)
+    # создаем пустую модель
+    skm = lm.LinearRegression()
+    # запускаем расчет параметров для указанных данных
+    skm.fit(x, y)
+    # и выведем параметры рассчитанной модели
+    print(skm.intercept_, skm.coef_)
+    return skm.coef_
